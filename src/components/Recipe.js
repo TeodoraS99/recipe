@@ -10,10 +10,13 @@ import Typography from "@mui/material/Typography";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 import AddRecipeModal from "../components/AddRecipeModal";
+import ViewRecipeModal from "../components/ViewRecipeModal";
+
 import { db } from "../firebase";
 
 const Recipe = ({ recipe }) => {
   const [open, setOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,6 +24,14 @@ const Recipe = ({ recipe }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleViewOpen = () => {
+    setViewOpen(true);
+  };
+
+  const handleViewClose = () => {
+    setViewOpen(false);
   };
 
   const handleDelete = async (id) => {
@@ -37,9 +48,21 @@ const Recipe = ({ recipe }) => {
           title="Recipe Image"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            onClick={handleViewOpen}
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
             {recipe.recipe_title}
           </Typography>
+
+          <ViewRecipeModal
+            isOpen={viewOpen}
+            recipe={recipe}
+            onHandleClose={handleViewClose}
+          ></ViewRecipeModal>
+
           <Typography variant="body2" color="text.secondary">
             {recipe.preparation}
           </Typography>
