@@ -6,11 +6,16 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import {addDoc, collection, doc, getDoc, serverTimestamp} from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db, storage } from "../firebase";
+
 
 const initialState = {
   recipe_title: "",
@@ -48,10 +53,6 @@ function AddRecipeModal(props) {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  // useEffect(() => {
-  //   id && getSingleRecipe();
-  // }, [id]);
-
   useEffect(() => {
     if (props.recipe) {
       setData({
@@ -65,17 +66,8 @@ function AddRecipeModal(props) {
     }
   }, [props.recipe]);
 
-  const getSingleRecipe = async () => {
-    const docRef = doc(db, "recipes", id);
-    const snapshot = await getDoc(docRef);
-    if (snapshot.exists()) {
-      setData({ ...snapshot.data() });
-    }
-  };
-
   useEffect(() => {
     const uploadFile = () => {
-      const name = new Date().getTime() + file.name;
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -194,7 +186,6 @@ function AddRecipeModal(props) {
             <input
               type="file"
               name="image"
-              // onChange={(e) => setFile({ ...data, image: e.target.files[0] })}
               onChange={(e) => setFile(e.target.files[0])}
             />
           </Button>
