@@ -6,10 +6,15 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { db, storage } from "../firebase";
 
 const initialState = {
@@ -33,21 +38,29 @@ function AddRecipeModal(props) {
   } = data;
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
-  const { id } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data);
-    await addDoc(collection(db, "recipes"), {
-      ...data,
-      tiestamp: serverTimestamp(),
-    });
+
+    if (props.recipe) {
+      const recipeRef = doc(db, "recipes", props.recipe.id);
+      await updateDoc(recipeRef, data);
+    } else {
+      await addDoc(collection(db, "recipes"), {
+        ...data,
+        timestamp: serverTimestamp(),
+      });
+      setData(initialState);
+    }
+    props.onHandleClose();
   };
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  console.log(data);
   useEffect(() => {
     if (props.recipe) {
       setData({
@@ -109,7 +122,7 @@ function AddRecipeModal(props) {
       fullScreen
     >
       <DialogTitle>Add Recipe</DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ paddingTop: "15px" }}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <TextField
             label="Recipe Title"
@@ -147,6 +160,7 @@ function AddRecipeModal(props) {
 
           <Select
             labelId="complexity-label"
+            id="complexity"
             value={complexity}
             onChange={handleChange}
             fullWidth
@@ -176,7 +190,6 @@ function AddRecipeModal(props) {
           />
 
           <Button variant="outlined" component="label">
-            Upload File
             <input
               type="file"
               name="image"

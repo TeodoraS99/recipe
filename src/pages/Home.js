@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Recipe from "../components/Recipe";
 import { db } from "../firebase";
@@ -8,8 +8,10 @@ const Home = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
+    const recipeRef = collection(db, "recipes");
+    const q = query(recipeRef, orderBy("timestamp"));
     const unsub = onSnapshot(
-      collection(db, "recipes"),
+      q,
       (snapshot) => {
         let list = [];
         snapshot.docs.forEach((doc) => {

@@ -40,14 +40,14 @@ const Recipe = ({ recipe }) => {
 
   return (
     <Grid item key={recipe.id} xs={12} sm={6} md={4}>
-      <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <CardMedia
-          sx={{ height: 140 }}
+          sx={{ height: '140px' }}
           image={recipe.img}
           component="img"
           title="Recipe Image"
         />
-        <CardContent>
+        <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography
             onClick={handleViewOpen}
             gutterBottom
@@ -63,7 +63,17 @@ const Recipe = ({ recipe }) => {
             onHandleClose={handleViewClose}
           ></ViewRecipeModal>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              maxHeight: "4.5em",
+            }}
+          >
             {recipe.preparation}
           </Typography>
         </CardContent>

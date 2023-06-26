@@ -27,7 +27,7 @@ export default function Header() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Reteta
+            Recipe Book
           </Typography>
 
           <Button color="inherit" variant="outlined" onClick={handleClickOpen}>
