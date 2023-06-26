@@ -6,16 +6,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import {
-  addDoc,
-  collection,
-  serverTimestamp
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db, storage } from "../firebase";
-
 
 const initialState = {
   recipe_title: "",
@@ -70,7 +65,6 @@ function AddRecipeModal(props) {
     const uploadFile = () => {
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
-
       uploadTask.on(
         "state_changed",
         (snapshot) => {

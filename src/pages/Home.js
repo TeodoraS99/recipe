@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
 import Recipe from "../components/Recipe";
+import { db } from "../firebase";
 
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
@@ -32,7 +32,7 @@ const Home = () => {
       <Grid item xs={10} md={8}>
         <Grid container spacing={3}>
           {recipes.map((recipe) => (
-              <Recipe recipe={recipe} key={recipe.id}/>
+            <Recipe recipe={recipe} key={recipe.id} />
           ))}
         </Grid>
       </Grid>
